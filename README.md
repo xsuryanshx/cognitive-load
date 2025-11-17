@@ -24,7 +24,7 @@ Data is stored both locally in CSV files (organized by user and session) and in 
 ## Project Structure
 
 ```
-databricks_hack/
+cognitive-load/
 ├── backend/                      # Python FastAPI backend
 │   ├── main.py                  # API endpoints
 │   ├── models.py                 # Pydantic data models
@@ -43,28 +43,19 @@ databricks_hack/
 │   ├── .env.example             # Environment variables template
 │   ├── requirements.txt         # Python dependencies
 │   └── run.sh                   # Backend startup script
-├── frontend/                     # React frontend
-│   ├── src/
-│   │   ├── components/
-│   │   │   ├── Auth.js          # Authentication component
-│   │   │   └── TypingTest.js    # Main typing test component
-│   │   └── App.js
-│   └── package.json
-├── data/                        # CSV data files (created at runtime)
-│   └── {user_id}/               # Per-user folders
-│       └── {timestamp}/         # Per-session folders
-│           ├── keystrokes.csv
-│           └── sessions.csv
-├── scripts/
-│   └── preview_csv.py           # Utility to preview collected data
-├── notebooks/
-│   └── databricks_ingest.ipynb  # Databricks ingestion notebook
-├── shared/
-│   └── schema.md                # Data schema documentation
-├── SETUP_DATABRICKS.md          # Databricks setup guide
-├── QUICKSTART.md                # Quick start guide
-└── README.md
+└── frontend/                     # React frontend
+    ├── src/
+    │   ├── components/
+    │   │   ├── Auth.js          # Authentication component
+    │   │   └── TypingTest.js    # Main typing test component
+    │   └── App.js
+    └── package.json
 ```
+
+**Note**: The following directories are created at runtime and are not tracked in git:
+- `data/` - CSV data files organized by user and session
+- `users.json` - User database file
+- `venv/` - Python virtual environment
 
 ## Setup Instructions
 
@@ -171,25 +162,7 @@ The frontend will be available at `http://localhost:3000`
 
 ### Viewing Collected Data
 
-Use the preview script to summarize collected data:
-
-```bash
-python scripts/preview_csv.py [data_directory]
-```
-
-Example output:
-```
-KEYSTROKE DATA SUMMARY
-================================================================================
-
-File: keystrokes_20240115.csv
-Date: 20240115
-  Total keystrokes: 523
-  Unique participants: 1
-  Unique sessions: 1
-  Sample session WPM: 45.2
-  Average key hold duration: 125.3 ms
-```
+CSV data files are automatically created in the `data/` directory during test sessions, organized by user and session timestamp.
 
 ### Data Files
 
@@ -220,8 +193,6 @@ This organization allows for:
 - Simple batch uploads to Databricks
 
 ## Data Schema
-
-See `shared/schema.md` for detailed schema documentation.
 
 ### Keystroke Events
 
@@ -389,11 +360,7 @@ python upload_csv_to_databricks.py ../data/{user_id}/{timestamp}/keystrokes.csv
 ```
 
 #### Option 3: Notebook-based Ingestion
-Use the Jupyter notebook for batch processing:
-
-1. Open `notebooks/databricks_ingest.ipynb` in Databricks
-2. Update configuration paths
-3. Run the ingestion cells
+You can create a Databricks notebook for batch processing CSV files from the data directory.
 
 ### Databricks Tables
 
@@ -407,7 +374,11 @@ Use the Jupyter notebook for batch processing:
 - sentence_count, total_keystrokes, average_wpm
 - session_timestamp
 
-See `SETUP_DATABRICKS.md` for detailed setup instructions and troubleshooting.
+**Troubleshooting Databricks Connection:**
+- Ensure your SQL warehouse is running in Databricks
+- Verify credentials in `.env` file are correct
+- Check firewall/network connectivity to Databricks
+- Verify the access token has not expired
 
 ## Development
 
@@ -460,13 +431,6 @@ MIT License - See LICENSE file for details
 2. Create a feature branch
 3. Make your changes
 4. Submit a pull request
-
-## Additional Documentation
-
-- **Quick Start**: See `QUICKSTART.md` for a 5-minute setup guide
-- **Databricks Setup**: See `SETUP_DATABRICKS.md` for detailed Databricks configuration
-- **Data Schema**: See `shared/schema.md` for complete data schema documentation
-- **File Locations**: See `FILE_LOCATIONS.md` for project file organization
 
 ## Security Notes
 
