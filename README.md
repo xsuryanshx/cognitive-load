@@ -2,6 +2,31 @@
 
 A Python + React platform for collecting typing speed and keystroke data, designed to replicate the data collection methodology from the [136 Million Keystrokes](https://github.com/aalto-ui/136m-keystrokes) project.
 
+## 📌 Demo  
+The frontend used for keystroke data collection looks like this:
+
+https://github.com/user-attachments/assets/d020e31e-364e-41d1-817e-ff5cca92b600
+
+---
+
+## 📊 Collected Data 
+Each keystroke is captured with fine-grained timing and metadata.  
+The dataset includes the following fields:
+
+- **PARTICIPANT_ID** — Unique identifier for each participant.  
+- **TEST_SECTION_ID** — The test or section during which data was recorded.  
+- **SENTENCE** — The sentence the participant was instructed to type.  
+- **KEYSTROKE_ID** — Sequential index of each keystroke.  
+- **PRESS_TIME** — Timestamp of when a key was pressed.  
+- **RELEASE_TIME** — Timestamp of when a key was released.  
+- **LETTER** — The typed character or key (e.g., letters, SHIFT, BKSP).  
+- **KEYCODE** — Numerical keycode for the corresponding physical key.
+
+---
+
+<img width="1066" height="400" alt="Screenshot 2025-11-21 at 4 56 00 PM" src="https://github.com/user-attachments/assets/0c25b554-68c3-49b8-bc0f-dd187720ee4e" />
+
+
 ## Overview
 
 This platform captures detailed keystroke metrics including:
